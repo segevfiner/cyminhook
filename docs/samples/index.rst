@@ -7,4 +7,5 @@ Samples
    :maxdepth: 2
    :caption: Contents:
 
-   messagebox
+   messagebox_class
+   messagebox_init

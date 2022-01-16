@@ -60,15 +60,15 @@ cdef class MinHook:
 
     def __init__(self, *, signature=None, target=None, detour=None):
         if signature is None:
-            signature = self.signature
-            if signature is None:
+            self.signature = getattr(self, 'signature', None)
+            if self.signature is None:
                 raise ValueError("signature not specified")
         else:
             self.signature = signature
 
         if target is None:
-            target = self.target
-            if target is None:
+            self.target = getattr(self, 'target', None)
+            if self.target is None:
                 raise ValueError("target not specified")
         else:
             self.target = target
@@ -79,8 +79,8 @@ cdef class MinHook:
         self._target = <cminhook.LPVOID><uintptr_t>self.target
 
         if detour is None:
-            detour = self.detour
-            if detour is None:
+            self.detour = getattr(self, 'detour', None)
+            if self.detour is None:
                 raise ValueError("detour not specified")
         else:
             self.detour = detour
@@ -107,7 +107,7 @@ cdef class MinHook:
     def __exit__(self, exc_type, exc_value, traceback):
         self.close()
 
-    def close(self):
+    cdef close(self):
         """Close the hook. Removing it."""
         if self._original is not NULL:
             cminhook.MH_RemoveHook(self._target)

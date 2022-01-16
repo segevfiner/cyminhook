@@ -8,7 +8,7 @@ cyminhook
    :target: https://segevfiner.github.io/cyminhook/
    :alt: Docs
 
-Hook functions on Windows using MinHook.
+Hook functions on Windows using `MinHook <https://github.com/TsudaKageyu/minhook>`_.
 
 Quick Start:
 

@@ -39,7 +39,7 @@ jobs:
         run: python -m cibuildwheel --output-dir dist
         env:
           CIBW_BEFORE_BUILD: |
-            Remove-Item -Recurse -Force _skbuild
+            rmdir /s /q _skbuild
 
       - uses: actions/upload-artifact@v2
         with:

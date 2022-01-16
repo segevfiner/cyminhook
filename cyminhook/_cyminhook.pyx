@@ -47,6 +47,8 @@ cdef class MinHook:
     :cls:`ctypes.WINFUNCTYPE`, :cls:`ctypes.PYFUNCTYPE`. *target* is either the address to hook or a
     :mod:`ctypes` function object for the function to hook. *detour* is the Python callable that
     will be called by the hook.
+
+    .. warning:: Be careful not to enter an infinite recursion from the *detour* function.
     """
     cdef public object signature
     cdef public object target
@@ -130,3 +132,24 @@ cdef class MinHook:
         status = cminhook.MH_DisableHook(self._target)
         if status != cminhook.MH_OK:
             raise Error(status)
+
+
+def queue_enable(MinHook hook not None):
+    """Queue to enable an already created hook."""
+    status = cminhook.MH_QueueEnableHook(hook._target)
+    if status != cminhook.MH_OK:
+        raise Error(status)
+
+
+def queue_disable(MinHook hook not None):
+    """Queue to disable an already created hook."""
+    status = cminhook.MH_QueueDisableHook(hook._target)
+    if status != cminhook.MH_OK:
+        raise Error(status)
+
+
+def apply_queued():
+    """Apply all queued changes in one go."""
+    status = cminhook.MH_ApplyQueued()
+    if status != cminhook.MH_OK:
+        raise Error(status)

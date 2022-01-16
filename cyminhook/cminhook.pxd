@@ -75,6 +75,6 @@ cdef extern from "MinHook.h":
 
     MH_STATUS MH_QueueDisableHook(LPVOID pTarget)
 
-    MH_STATUS MH_ApplyQueued(VOID)
+    MH_STATUS MH_ApplyQueued()
 
     const char * MH_StatusToString(MH_STATUS status)

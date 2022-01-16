@@ -38,6 +38,7 @@ jobs:
       - name: Build wheels
         run: python -m cibuildwheel --output-dir dist
         env:
+          CIBW_SKIP: 'pp*'
           CIBW_BEFORE_BUILD: |
             if exist _skbuild rmdir /s /q _skbuild
 

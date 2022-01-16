@@ -1,6 +1,6 @@
-# cython: language_level=3str
+# cython: language_level=3str, binding=True
 """
-Hook functions on Windows using minhook.
+Hook functions on Windows using MinHook.
 """
 import enum
 import ctypes
@@ -43,10 +43,10 @@ cdef class MinHook:
     """
     MinHook hook.
 
-    *signature* is a :mod:`ctypes` function signature created by either :cls:`ctypes.CFUNCTYPE`,
-    :cls:`ctypes.WINFUNCTYPE`, :cls:`ctypes.PYFUNCTYPE`. *target* is either the address to hook or a
-    :mod:`ctypes` function object for the function to hook. *detour* is the Python callable that
-    will be called by the hook.
+    *signature* is a :mod:`ctypes` function signature created by either :func:`ctypes.CFUNCTYPE`,
+    :func:`ctypes.WINFUNCTYPE`, :func:`ctypes.PYFUNCTYPE`. *target* is either the address to hook
+    or a :mod:`ctypes` function object for the function to hook. *detour* is the Python callable
+    that will be called by the hook.
 
     .. warning:: Be careful not to enter an infinite recursion from the *detour* function.
     """

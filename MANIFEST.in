@@ -1,4 +1,0 @@
-include LICENSE NOTICE CMakeLists.txt pyproject.toml
-recursive-include cyminhook *.pyx *.pxd CMakeLists.txt
-graft cmake/Modules
-graft minhook

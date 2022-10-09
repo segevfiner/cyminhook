@@ -41,7 +41,7 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add .
-        git commit -m "Update documentation to $GITHUB_SHA" || true
+        git commit -m "Update documentation to $env:GITHUB_SHA" || true
         # The above command will fail if no changes were present, so we ignore
         # the return code.
         git push

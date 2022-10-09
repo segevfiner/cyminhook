@@ -9,6 +9,10 @@ jobs:
   docs:
     runs-on: windows-2019
 
+    env:
+      # XXX https://github.com/scikit-build/scikit-build/issues/740
+      SETUPTOOLS_ENABLE_FEATURES: legacy-editable
+
     steps:
     - uses: actions/checkout@v3
       with:

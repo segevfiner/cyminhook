@@ -45,7 +45,7 @@ setup(
     python_requires='>=3.6',
     extras_require={
         "dev": [
-            "sphinx==4.*",
+            "sphinx==5.*",
         ],
     },
 )

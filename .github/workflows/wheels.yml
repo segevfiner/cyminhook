@@ -22,7 +22,7 @@ jobs:
 
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.11'
 
       - name: Build sdist
         if: matrix.os == 'windows-2019'
@@ -31,7 +31,7 @@ jobs:
           python setup.py sdist
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.10.2
+        uses: pypa/cibuildwheel@v2.11.2
         env:
           CIBW_SKIP: 'pp*'
           CIBW_BEFORE_BUILD: |

@@ -107,7 +107,7 @@ cdef class MinHook:
     def __exit__(self, exc_type, exc_value, traceback):
         self.close()
 
-    cdef close(self):
+    cpdef close(self):
         """Close the hook. Removing it."""
         if self._original is not NULL:
             cminhook.MH_RemoveHook(self._target)

@@ -5,4 +5,4 @@ Hook functions on Windows using MinHook.
 from ._cyminhook import *
 
 
-__version__ = "0.1.4"
+__version__ = "0.1.5"

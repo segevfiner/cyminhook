@@ -6,6 +6,7 @@ on:
     - main
     tags:
     - v[0-9].*
+  workflow_dispatch:
 
 jobs:
   build_wheels:
@@ -22,16 +23,16 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
 
       - name: Build sdist
         if: matrix.os == 'windows-2019'
         run: |
-          pip install scikit-build cython
-          python setup.py sdist
+          pip install build
+          python -m build --sdist
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.16.5
+        uses: pypa/cibuildwheel@v2.21.3
         env:
           CIBW_SKIP: 'pp*'
           CIBW_BEFORE_BUILD: |

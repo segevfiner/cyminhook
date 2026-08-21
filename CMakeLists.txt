@@ -16,4 +16,4 @@ cython_transpile(cyminhook/_cyminhook.pyx LANGUAGE C
 
 python_add_library(_cyminhook MODULE ${_cyminhook_c} WITH_SOABI)
 target_link_libraries(_cyminhook PRIVATE minhook)
-install(TARGETS _cyminhook LIBRARY DESTINATION cyminhook)
+install(TARGETS _cyminhook LIBRARY DESTINATION ${SKBUILD_PROJECT_NAME})

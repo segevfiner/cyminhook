@@ -5,34 +5,54 @@ on:
     branches:
     - main
 
-jobs:
-  docs:
-    runs-on: windows-2019
+  workflow_dispatch:
 
-    env:
-      # XXX https://github.com/scikit-build/scikit-build/issues/740
-      SETUPTOOLS_ENABLE_FEATURES: legacy-editable
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
       with:
         submodules: true
 
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@v7
       with:
-        python-version: '3.12'
+        python-version: '3.14'
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip setuptools wheel
+        python -m pip install --upgrade pip
     - name: Install
       run: |
         pip install -e .[dev]
+    - name: Setup Pages
+      id: pages
+      uses: actions/configure-pages@v6
     - name: Build documentation
       run: |
         make html
       working-directory: ./docs
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v4
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v5
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs/_build/html
+        path: ./docs/_build/html
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

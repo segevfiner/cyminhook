@@ -5,7 +5,7 @@ on:
     branches:
     - main
     tags:
-    - v[0-9].*
+    - 'v[0-9].*'
   workflow_dispatch:
 
 jobs:
@@ -13,56 +13,64 @@ jobs:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        os: [windows-2019]
+        os: [windows-2022]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           submodules: true
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
-          python-version: '3.12'
+          python-version: '3.14'
 
       - name: Build sdist
-        if: matrix.os == 'windows-2019'
+        if: matrix.os == 'windows-2022'
         run: |
           pip install build
           python -m build --sdist
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.21.3
+        uses: pypa/cibuildwheel@v4.2.0
         env:
           CIBW_SKIP: 'pp*'
-          CIBW_BEFORE_BUILD: |
-            if exist _skbuild rmdir /s /q _skbuild
-          # XXX https://github.com/scikit-build/scikit-build/issues/740
-          CIBW_ENVIRONMENT: >
-            SETUPTOOLS_ENABLE_FEATURES=legacy-editable
         with:
           output-dir: dist
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: wheels-${{ matrix.os }}
           path: dist/*
 
-  upload_release:
-    name: Upload release
+  publish:
+    name: Publish
     needs: [build_wheels]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
 
+    permissions:
+      contents: write
+      id-token: write
+
+    environment:
+      name: pypi
+      url: https://pypi.org/project/cyminhook/
+
     steps:
-    - uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v8
       with:
         pattern: wheels-*
         merge-multiple: true
         path: dist
 
-    - name: Release
-      uses: softprops/action-gh-release@v1
+    - name: Publish release distributions to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        draft: true
+        packages-dir: dist
+
+    - name: Release
+      uses: softprops/action-gh-release@v3
+      with:
         files: dist/*

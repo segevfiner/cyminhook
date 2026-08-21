@@ -1,3 +1,45 @@
 [build-system]
-requires = ["setuptools>=59", "scikit-build>=0.13.1", "cmake", "ninja; sys_platform != 'win32'", "cython"]
-build-backend = "setuptools.build_meta"
+requires = ["scikit-build-core", "cython>=3.0", "cython-cmake"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "cyminhook"
+dynamic = ["version"]
+authors = [{ name = "Segev Finer", email = "segev208@gmail.com" }]
+description = "Hook functions on Windows using MinHook"
+keywords = ["MinHook"]
+license = "MIT"
+license-files = ["LICENSE"]
+readme = "README.rst"
+requires-python = ">=3.9"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Win32 (MS Windows)",
+    "Intended Audience :: Developers",
+    "Topic :: Security",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Cython",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+
+[project.urls]
+homepage = "https://github.com/segevfiner/cyminhook"
+documentation = "https://segevfiner.github.io/cyminhook/"
+issues = "https://github.com/segevfiner/cyminhook/issues"
+
+[project.optional-dependencies]
+dev = [
+    "sphinx==9.*; python_version >= '3.12'",
+]
+
+[[tool.dynamic-metadata]]
+provider = "scikit_build_core.metadata.regex"
+field = "version"
+input = "cyminhook/__init__.py"
